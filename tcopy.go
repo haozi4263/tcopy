@@ -20,7 +20,7 @@ type K8s struct {
 	Port           string
 	Path           string
 	Host           string
-	Ns	       string
+	Ns			   string
 	Svc_name       string
 	Svc_port       string
 	Tag_port       string
@@ -44,13 +44,13 @@ func initArgs() {
 func initTemplate(templatesFile string) (err error) {
 	switch {
 	case templatesFile == "svc":
-		templatesFile = "./svc.yaml"
+		templatesFile = "./templates/svc.yaml"
 	case templatesFile == "ingress":
-		templatesFile = "./ingress.yaml"
+		templatesFile = "./templates/ingress.yaml"
 	case templatesFile == "deploy":
-		templatesFile = "./deployment.yaml"
+		templatesFile = "./templates/deploy.yaml"
 	default:
-		templatesFile = "./template.yaml"
+		templatesFile = "./templates/template.yaml"
 	}
 	t, err = template.ParseFiles(templatesFile)
 	if err != nil {
@@ -74,7 +74,7 @@ func main() {
 	//设置读取的配置文件
 	vv.SetConfigName(valuesFile)
 	//添加读取的配置文件路径
-	vv.AddConfigPath("./")
+	vv.AddConfigPath("./templates")
 	//windows环境下为%GOPATH，linux环境下为$GOPATH
 	vv.AddConfigPath("%GOPATH/src/")
 	//设置配置文件类型
@@ -85,6 +85,19 @@ func main() {
 	}
 	yaml := parseYaml(vv)
 
+
+	_, err := os.Stat("./k8s")
+	if err == nil {
+		fmt.Println("k8s dir is exits")
+	} else {
+		err = os.Mkdir("./k8s", os.ModePerm)
+		if err != nil {
+			fmt.Printf("mkdir failed![%v]\n", err)
+		} else {
+			fmt.Printf("mkdir success!\n")
+		}
+	}
+
 	file, err := os.OpenFile(destFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 	if err != nil {
 		fmt.Println("open failed err:", err)
@@ -93,4 +106,5 @@ func main() {
 	if err := t.Execute(file, yaml); err != nil {
 		fmt.Println("There was an error:", err.Error())
 	}
+	fmt.Printf("k8s parse %v.yaml file successfuly\n",destFile)
 }
