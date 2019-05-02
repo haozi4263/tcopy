@@ -20,7 +20,7 @@ type K8s struct {
 	Port           string
 	Path           string
 	Host           string
-	Ns             string
+	Ns	       string
 	Svc_name       string
 	Svc_port       string
 	Tag_port       string
@@ -35,13 +35,23 @@ type K8s struct {
 }
 
 func initArgs() {
-	flag.StringVar(&templatesFile, "s", "./template.yaml", "-s 指定template源文件")
+	flag.StringVar(&templatesFile, "s", "svc", "-s 指定template源文件")
 	flag.StringVar(&valuesFile, "v", "./values", "-v 指定values配置文件")
-	flag.StringVar(&destFile, "d", "./app.yaml", "-d 指定生成的目标配置文件")
+	flag.StringVar(&destFile, "d", "./k8s/app.yaml", "-d 指定生成的目标配置文件")
 	flag.Parse()
 }
 
 func initTemplate(templatesFile string) (err error) {
+	switch {
+	case templatesFile == "svc":
+		templatesFile = "./svc.yaml"
+	case templatesFile == "ingress":
+		templatesFile = "./ingress.yaml"
+	case templatesFile == "deploy":
+		templatesFile = "./deployment.yaml"
+	default:
+		templatesFile = "./template.yaml"
+	}
 	t, err = template.ParseFiles(templatesFile)
 	if err != nil {
 		fmt.Println("parse file err:", err)
@@ -75,7 +85,7 @@ func main() {
 	}
 	yaml := parseYaml(vv)
 
-	file, err := os.OpenFile(destFile, os.O_CREATE|os.O_WRONLY, 0755)
+	file, err := os.OpenFile(destFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 	if err != nil {
 		fmt.Println("open failed err:", err)
 		return
