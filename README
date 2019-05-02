@@ -1,2 +1,0 @@
-通过模版变量渲染生成真是k8s的svc、deployment、ingress yaml文件
-用法: tcopy -s svc/ingress/deploy -d centos-svc.yaml
