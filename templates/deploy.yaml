@@ -1,0 +1,29 @@
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  Name: {{.Name}}
+  Namespace: {{.Ns}}
+spec:
+  replicas: {{.Replicas}}
+  template:
+    metadata:
+      labels:
+        Name: {{.Name}}
+    spec:
+      containers:
+      - Name: {{.Name}}
+        image: {{.Image}}
+        imagePullPolicy: {{.Img_policy}}
+        ports:
+          - containerPort: {{.Svc_port}}
+        env:
+        - Name: {{.Env_name01}}
+          value: {{.Env_value01}}
+        volumeMounts:
+        - Name: {{.Volume_name01}}
+          mountPath: {{.Volume_value01}}
+      volumes:
+      - Name: {{.Volume_name01}}
+        emptyDir: {}
+---
