@@ -20,7 +20,7 @@ type K8s struct {
 	Port           string
 	Path           string
 	Host           string
-	Ns			   string
+	Ns             string
 	Svc_name       string
 	Svc_port       string
 	Tag_port       string
