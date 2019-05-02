@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{.Name}}
+  namespace: {{.Ns}}
+spec:
+  rules:
+  - host: {{.Host}}
+    http:
+      paths:
+      - path: {{.Path}}
+        backend:
+          serviceName: {{.Svc_name}}
+          servicePort: {{.Svc_port}}

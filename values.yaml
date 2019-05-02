@@ -1,0 +1,16 @@
+Name: test
+Port: 2206
+Ns: kube-system
+Path: /
+host: www.icsoc.net
+Svc_name: test
+Svc_port: 3306
+Tag_port: 3306
+Port_name: mysql
+Replicas: 2
+Image: centos
+Img_policy: im-dev
+Env_name01: aliyun_logs_crm-datasync
+Env_value01: stdout
+Volume_name01: im-centos
+Volume_value01: im-centos

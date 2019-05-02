@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  Name: {{.Name}}
+  Namespace: {{.Ns}}
+  labels:
+    Name: {{.Name}}
+spec:
+  selector:
+    Name: {{.Name}}
+  ports:
+  - Name: {{.Port_name}}
+    port: {{.Svc_port}}
+    targetPort: {{.Tag_port}}
