@@ -1,0 +1,2 @@
+###  通过模版变量渲染生成真是k8s的svc、deployment、ingress文件
+##  用法 tcopy -s svc.yaml -d centos-svc.yaml
